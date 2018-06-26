@@ -1,0 +1,33 @@
+VAR $mystring, STRING,100,"Hello world MIS"
+
+VAR $myint,NUMERIC,100
+VAR $myint1,NUMERIC,200
+VAR $myint2,NUMERIC,300
+VAR $myfloat,REAL,12.14
+
+THREAD_BEGIN
+	LOCK $myint
+	ADD $myint,100,5
+	SUB $myint2,$myint,100
+	OUT "This is the Value of myint", $myint , "!!\n" 
+	OUT "This is the Value of myint1", $myint1 , "!!\n"
+	OUT "This is the Value of myint2", $myint2 , "!!\n" 
+
+THREAD_END
+
+LOCK $myint1
+	
+THREAD_BEGIN
+	OUT "New Thread Begin"
+	ADD $myint,$myint1,100
+	SUB $myint2,$myint1,100
+	OUT "This is the Value of myint", $myint , "!!\n" 
+	OUT "This is the Value of myint1", $myint1 , "!!\n"
+	OUT "This is the Value of myint2", $myint2 , "!!\n" 
+ 
+	SLEEP 5
+THREAD_END
+
+OUT "Forked Threads and will sleep on Barriern"
+BARRIER
+OUT "Out of Barrier and exiting programn"

@@ -1,0 +1,57 @@
+VAR $mystring,STRING, 100,"Hello world MIS\n"
+VAR $myint,NUMERIC,100
+VAR $myfloat, REAL, 20.6
+VAR $counter1,NUMERIC,0
+VAR $counter2,NUMERIC,0
+VAR $counter3,NUMERIC,0
+VAR $sleep1,NUMERIC,0
+VAR $sleep2,NUMERIC,0
+VAR $sleep3,NUMERIC,0
+VAR $sleep4,NUMERIC,0
+ASSIGN $counter1,10
+ASSIGN $counter2,20
+ASSIGN $counter3,30
+ASSIGN $sleep1,3
+ASSIGN $sleep2,2
+ASSIGN $sleep3,1
+ASSIGN $sleep4,2
+THREAD_BEGIN
+SETAFFINITY 1
+LABEL LOOP1
+	OUT "Thread 1 ",$mystring,$counter1," !!\n"
+	SUB $counter1,$counter1,1
+	SLEEP $sleep1
+JMPNZ LOOP1,$counter1
+THREAD_END
+THREAD_BEGIN
+LABEL LOOP2
+	OUT "Thread 2 ",$mystring,$counter2," !!\n"
+	SUB $counter2,$counter2,1
+	SLEEP $sleep2
+JMPNZ LOOP2,$counter2
+THREAD_END
+THREAD_BEGIN
+SETAFFINITY 0
+LABEL LOOP3
+	OUT "Thread 3 ",$mystring,$counter3," !!\n"
+	SUB $counter3,$counter3,1
+	SLEEP $sleep3
+JMPNZ LOOP3,$counter3
+THREAD_END
+THREAD_BEGIN
+	ADD $myint,100,20.7,300,$myint
+	MUL $myint,100,20.7,300,$myint
+	SUB $myint,$myint,100
+	OUT "This is the Value of myint", $myint , "!!\n" 
+	SLEEP $sleep4
+THREAD_END
+THREAD_BEGIN
+	ADD $myint,100,20.7,300,$myint
+	DIV $myfloat,100,$myint
+	SUB $myint,$myint,100
+	OUT "This is the Value of myint", $myint , "!!\n" 
+	SLEEP $sleep4
+THREAD_END
+OUT "Forked Threads and will sleep on Barriern"
+BARRIER
+OUT "Out of Barrier and exiting programn"
