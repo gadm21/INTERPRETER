@@ -8,6 +8,37 @@
 
 typedef int (*ScriptFunction)(vector<string> &tokens, vector<expression*> &instrVector, vector<expression*> &varVector, string &error, bool &accept);
 typedef map<string, ScriptFunction> funcMap;
+serverMIS::serverMIS(string fileName):MIS(fileName){
+	reader= new serverReader(fileName);
+	myMap= initializeMap();
+}
+void serverMIS::localStart(){
+	
+	vector<string> inputVector=reader->Read();
+	string errors= reader->Parse(inputVector, myMap, instrVector, varVector);
+	reader->printErrors(errors);
+	execute();
+	printOutput();
+}
+
+int serverMIS::interpret(){
+
+    //calling the Reader's recieveandExtract function that takes the map
+    // with which the input file lines are compared, and an empty vector to fill it with expressions
+    //if(reader!= nullptr) reader->recieveandExtract(myMap, instrVector, varVector);
+
+   // calling the MIS's execute() function which in return calls the execute() function
+    //of every expression in the exprVector vector
+
+	vector<string> inputVector= reader->Receive();
+	string errors= reader->Parse(inputVector, myMap, instrVector, varVector);
+	reader->sendErrors(errors);
+	execute();
+	sendOutput();
+	cout<<"ending"<<endl;
+    return 1;
+}
+
 
 serverMIS::serverMIS( TCPSocket *slv){
 	slave1= slv;
@@ -55,27 +86,18 @@ map<string, ScriptFunction>& serverMIS::initializeMap(){
 }
 
 
-int serverMIS::interpret(){
 
-    //calling the Reader's recieveandExtract function that takes the map
-    // with which the input file lines are compared, and an empty vector to fill it with expressions
-    if(reader!= nullptr) reader->recieveandExtract(myMap, instrVector, varVector);
-
-   // calling the MIS's execute() function which in return calls the execute() function
-    //of every expression in the exprVector vector
-
-
-    execute();
-	cout<<"ending"<<endl;
-    return 1;
-}
 
 void serverMIS::execute(){
 	//  holding the index of expression being executed right now.
-	string outputs;
-	outputs="";
-    	int i=0;
-  	  while(i!=instrVector.size()){
+	string outputs="";
+    int i=0;
+	cout<<"size:"<<instrVector.size()<<endl;
+	cout<<"isntructions:"<<endl;
+	for(auto it= instrVector.begin(); it!= instrVector.end(); it++) cout<<(*it)->getlabel()<<endl;
+	cout<<endl<<"variables:"<<endl;
+	for(auto it= varVector.begin(); it!= varVector.end(); it++) cout<<(*it)->getlabel()<<endl;
+  	while(i!=instrVector.size()){
     	//calling every element's execute() function
     	int x=instrVector[i]->execute(instrVector, varVector, outputs);
 	if(x==0) break;
@@ -84,8 +106,12 @@ void serverMIS::execute(){
 	}
 	for(auto it= instrVector.begin(); it!=instrVector.end(); it++) delete (*it);
 	for(auto it= varVector.begin(); it!=varVector.end(); it++) delete (*it);
+	generatedOutput= outputs;
 
-   	 string output= outputs;
+} 
+
+void serverMIS::sendOutput(){
+  	 string output= generatedOutput;
 	
 
    	 char buffer[1024];
@@ -106,5 +132,10 @@ void serverMIS::execute(){
         slave1->writeToSocket(buffer, 1024);
 	memset(buffer, 0, 1024);
     }
+}
 
-} 
+void serverMIS::printOutput(){
+
+	ofstream outFile; outFile.open("output.out");
+	outFile<< generatedOutput;
+}

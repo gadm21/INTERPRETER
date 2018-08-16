@@ -208,7 +208,7 @@ int STRING::valid(vector<string> & tokens, vector<expression*> &instrVector, vec
 
 //the VAR valid() function that accually checks for the validity of NUMERIC, REAL, STRING, and CHAR classes
 int VAR::valid(vector<string> &tokens, vector<expression*> &instrVector, vector<expression*> &varVector, string &error, bool &accept){
-	cout<<"inside var valid"<<endl;
+	//cout<<"inside var valid"<<endl;
 	//give the vector of strings we got by separating the line according to spaces to toCommaTokens()
 	//and take back another vector of strings that we got by separating the line according to commas.
 	vector<string> parameters= Reader::toCommaTokens(tokens);
@@ -829,6 +829,7 @@ int OUT::valid(vector<string> & tokens, vector<expression*> &instrVector, vector
 
    //if you passed all these conditions successfully, return a pointer to OUT class
 	if(accept){
+		cout<<"OUT::valid: adding to instrVector"<<endl;
 		vector<string> *myV= &parameters;
 		instrVector.push_back(new OUT(Out, *myV));
 		return 1;
@@ -1076,6 +1077,7 @@ int LABEL::valid(vector<string> & tokens, vector<expression*> &instrVector, vect
 
 	if(accept){
 		instrVector.push_back(new LABEL(Label, parameters[0]));
+		cout<<"new label:"<< parameters[0]<<endl;
 		return 1;
 	}else return 1;
 
@@ -1550,11 +1552,16 @@ int OUT::execute(vector<expression*> &instrVector, vector<expression*> &varVecto
     }
     //add the string generated from this particualr OUT instruction to the static string variable
     //so we can sum all the outputs of all OUT instrucions
-			int cpu= sched_getcpu();
-			string z= "cpu: "+  to_string(cpu);
-    			output+=z;
     outputs+= output;
+	cout<<"first output:"<<outputs<<endl;
 	pthread_mutex_unlock(&lock);
+
+	//if you want, you can uncomment the following 3lines to check the core the current thread is running on.	
+	//int cpu= sched_getcpu();
+	//string z= "cpu: "+  to_string(cpu);
+    	//output+=z;
+
+
         return 1;
 
 }

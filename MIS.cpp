@@ -4,10 +4,12 @@
 
 //constructor that takes a file name and initialize the reader
 MIS::MIS(string f):filename(f){
-
+    generatedOutput="";
 }
 
-MIS::MIS(){}
+MIS::MIS(){
+    generatedOutput="";
+}
 MIS::~MIS(){
 }
 

@@ -1,0 +1,7 @@
+LOOP1isn't a name of a LABEL'LOOP2isn't a name of a LABEL'LOOP3isn't a name of a LABEL'the value of a STRING variable must be put between double qoutationsSETAFFINITY must be called from within a thread body $mystring isn't a variable1
+ is not a NUMERIC or a REAL variableSLEEP's parameter must be a number or a variable of type numeric/realLOOP1isn't a name of a LABEL'$mystring isn't a variable1
+ is not a NUMERIC or a REAL variableSLEEP's parameter must be a number or a variable of type numeric/realLOOP2isn't a name of a LABEL'SETAFFINITY must be called from within a thread body $mystring isn't a variable1
+ is not a NUMERIC or a REAL variableSLEEP's parameter must be a number or a variable of type numeric/realLOOP3isn't a name of a LABEL'the4th parameter in ADD must be either a NUMERIC or a REAL varible already declared before the4th parameter in ADD must be either a NUMERIC or a REAL varible already declared before 100
+ is not a NUMERIC or a REAL variableSLEEP's parameter must be a number or a variable of type numeric/realthe4th parameter in ADD must be either a NUMERIC or a REAL varible already declared before $myint
+ is not a NUMERIC or a REAL variable100
+ is not a NUMERIC or a REAL variableSLEEP's parameter must be a number or a variable of type numeric/real

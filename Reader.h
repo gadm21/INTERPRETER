@@ -33,10 +33,14 @@ class Reader{
 		//declaring whether the process succeded or not.
 		static bool isDouble(string str, double &d);
 		
+		vector<string> rawDataToVector(string &s);
 		//a function that takes a string vector and reestablish the full string from it
 		//then reseparate the full string again but this time separating every substring 
 		//with commas in the full string.
 		static vector<string>& toCommaTokens(vector<string>& tokens);
+
+		string Parse(vector<string> input, map<string, ScriptFunction> myMap, vector<expression*> &instrVector, vector<expression*> &varVector);
+		string clean(string &input);
 		~Reader();
 };
 
@@ -44,12 +48,18 @@ class Reader{
 class serverReader: public Reader{
 	private:
 		TCPSocket* slave1;
+		string fileName;
 	public:
+	serverReader(string _fileName);
 	serverReader(TCPSocket* slave1);
 	//a function that takes an initialized map and an empty vector of expressions 
 	//inside the function the input file is opened and lines are read and compared with pairs 
 	//in the map. if the line syntax is right, a new expression is pushed to the vector
-	 void recieveandExtract(map<string, ScriptFunction> myMap, vector<expression*> &instrVector, vector<expression*> &varVector);
+	vector<string> Receive();
+	vector<string> rawDataToVector(string &s);
+	vector<string> Read();
+	void sendErrors(string &errorContainer);
+	void printErrors(string &errorContainer);
 	~serverReader(); //remove the server
 };
 

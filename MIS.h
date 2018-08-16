@@ -18,6 +18,7 @@ class MIS{
 protected:
 	//a string to save the filename
     string filename;
+	string generatedOutput;
 public:
 	//a constructor that takes the ifle name as input
     MIS(string f);
@@ -34,6 +35,7 @@ class serverMIS: public MIS{
 		serverReader *reader;
 		TCPSocket* slave1;
 	public:
+		serverMIS(string fileName);
 		serverMIS( TCPSocket* slave);
     	// a function to insert known pairs iside the map
     	map<string, ScriptFunction>& initializeMap();
@@ -45,8 +47,13 @@ class serverMIS: public MIS{
     		funcMap myMap ;
 		//a function that calls the compareandExtract function of Reader and then calls the execute()
    		int interpret();
+		void localStart();
+		void serverStart();
   		//loops through all expressions in the vector and calls the execute() function for each and every exprssion
   		void execute();
+
+		void printOutput();
+		void sendOutput();
 		~ serverMIS();
 };
 
